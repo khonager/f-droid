@@ -6,7 +6,7 @@ if ! command -v fdroid >/dev/null 2>&1; then
   exit 1
 fi
 
-: "${FDROID_REPO_URL:?Set FDROID_REPO_URL}"
+FDROID_REPO_URL="${FDROID_REPO_URL:-https://khonager.github.io/f-droid/repo}"
 : "${FDROID_KEYSTORE_PASSWORD:?Set FDROID_KEYSTORE_PASSWORD}"
 : "${FDROID_KEY_ALIAS:?Set FDROID_KEY_ALIAS}"
 : "${FDROID_KEY_PASSWORD:?Set FDROID_KEY_PASSWORD}"

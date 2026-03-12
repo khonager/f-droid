@@ -58,6 +58,12 @@ jobs:
           FDROID_KEY_ALIAS: ${{ secrets.FDROID_KEY_ALIAS }}
           FDROID_KEY_PASSWORD: ${{ secrets.FDROID_KEY_PASSWORD }}
         run: |
+          FDROID_REPO_URL="${FDROID_REPO_URL:-https://khonager.github.io/f-droid/repo}"
+          if [ -z "$FDROID_REPO_URL" ]; then
+            echo "FDROID_REPO_URL is empty; set repo variable FDROID_REPO_URL." >&2
+            exit 1
+          fi
+
           cp fdroid-config.template.yml config.yml
           sed -i "s|\${FDROID_REPO_URL}|${FDROID_REPO_URL}|g" config.yml
           sed -i "s|\${FDROID_KEYSTORE_PASSWORD}|${FDROID_KEYSTORE_PASSWORD}|g" config.yml
