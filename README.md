@@ -7,7 +7,7 @@ This repository hosts a custom F-Droid-compatible app repository for `khonager` 
 1. Install an F-Droid-compatible client (F-Droid, Neo Store, Droid-ify).
 2. Add this repository URL:
    - `https://khonager.github.io/f-droid/repo`
-3. Verify the repository fingerprint shown in the Releases/Docs section of this repo.
+3. Verify the repository fingerprint shown in this repo.
 4. Install/update apps from this repository.
 
 ## Repository layout
@@ -32,13 +32,26 @@ This repository hosts a custom F-Droid-compatible app repository for `khonager` 
 4. Set GitHub variable:
    - `FDROID_REPO_URL` = `https://khonager.github.io/f-droid/repo`
 
-## Add a new app
+## Automatic Trans stable sync
 
-1. Add APK(s) to `metadata/apks/` (or push via CI artifact fetch).
-2. Add metadata file `metadata/<applicationId>.yml`.
-3. Run workflow `Publish F-Droid Repo`.
+The publish workflow automatically downloads the latest stable Android APK from:
+- `khonager/Trans` latest GitHub release
+- asset name: `trans.apk`
 
-The workflow copies APKs into `repo/`, runs `fdroid update`, and publishes via GitHub Pages.
+Then it rebuilds the F-Droid index and publishes to GitHub Pages.
+
+## Local publish (optional)
+
+You can also run locally:
+
+```bash
+FDROID_REPO_URL=https://khonager.github.io/f-droid/repo \
+FDROID_KEYSTORE_PASSWORD=... \
+FDROID_KEY_ALIAS=... \
+FDROID_KEY_PASSWORD=... \
+FDROID_KEYSTORE_PATH=./fdroid-repo.jks \
+./scripts/publish_local.sh
+```
 
 ## Notes
 

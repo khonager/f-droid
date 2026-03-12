@@ -2,6 +2,8 @@ name: Publish F-Droid Repo
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
   push:
     branches: ["main"]
     paths:
@@ -9,6 +11,7 @@ on:
       - "scripts/**"
       - "fdroid-config.template.yml"
       - ".github/workflows/publish.yml"
+      - "README.md"
 
 permissions:
   contents: read
@@ -33,6 +36,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install fdroidserver
 
+      - name: Fetch latest stable APK from khonager/Trans
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRANS_OWNER: khonager
+          TRANS_REPO: Trans
+          TRANS_STABLE_ASSET_NAME: trans.apk
+        run: |
+          ./scripts/fetch_trans_stable_apk.sh metadata/apks
+
       - name: Restore F-Droid keystore
         env:
           FDROID_KEYSTORE_BASE64: ${{ secrets.FDROID_KEYSTORE_BASE64 }}
@@ -55,7 +67,8 @@ jobs:
       - name: Copy APKs into repo
         run: |
           mkdir -p repo
-          cp -f metadata/apks/*.apk repo/ 2>/dev/null || true
+          rm -f repo/*.apk
+          cp -f metadata/apks/*.apk repo/
 
       - name: Update F-Droid index
         run: |
