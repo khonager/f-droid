@@ -10,10 +10,8 @@ IssueTracker: https://github.com/khonager/Trans/issues
 AutoName: Trans
 Summary: Public transit companion app
 Description: |
-  Trans is a public transit companion app with route planning,
-  favorites, and optional account-backed social features.
-
-  This app is distributed through khonager's custom F-Droid repository.
+  A cross-platform public transit app built with Flutter. Plan routes,
+  track your journey with wake-up alarms, and never miss your stop again.
 
 RepoType: git
 Repo: https://github.com/khonager/Trans.git
