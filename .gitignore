@@ -1,0 +1,24 @@
+# Generated repo indexes/artifacts
+repo/index-v1.jar
+repo/index-v1.json
+repo/index-v2.json
+repo/entry.jar
+repo/entry.json
+repo/diff/
+repo/icons/
+repo/archive/
+
+# Keystores and local secrets
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+*.asc
+secrets/
+
+# Tooling
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,9 @@
+repo_url: ${FDROID_REPO_URL}
+repo_name: khonager F-Droid
+repo_description: Custom app repository for khonager apps.
+repo_icon: icon.png
+archive_older: 0
+keystore: /tmp/fdroid-keystore.jks
+keystorepass: ${FDROID_KEYSTORE_PASSWORD}
+keypass: ${FDROID_KEY_PASSWORD}
+repo_keyalias: ${FDROID_KEY_ALIAS}
