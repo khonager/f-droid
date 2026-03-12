@@ -12,18 +12,18 @@ fi
 : "${FDROID_KEY_PASSWORD:?Set FDROID_KEY_PASSWORD}"
 : "${FDROID_KEYSTORE_PATH:?Set FDROID_KEYSTORE_PATH}"
 
-TMP_CONFIG="/tmp/fdroid-config.yml"
-cp fdroid-config.template.yml "$TMP_CONFIG"
-sed -i "s|\${FDROID_REPO_URL}|${FDROID_REPO_URL}|g" "$TMP_CONFIG"
-sed -i "s|\${FDROID_KEYSTORE_PASSWORD}|${FDROID_KEYSTORE_PASSWORD}|g" "$TMP_CONFIG"
-sed -i "s|\${FDROID_KEY_ALIAS}|${FDROID_KEY_ALIAS}|g" "$TMP_CONFIG"
-sed -i "s|\${FDROID_KEY_PASSWORD}|${FDROID_KEY_PASSWORD}|g" "$TMP_CONFIG"
+trap 'rm -f config.yml' EXIT
+cp fdroid-config.template.yml config.yml
+sed -i "s|\${FDROID_REPO_URL}|${FDROID_REPO_URL}|g" config.yml
+sed -i "s|\${FDROID_KEYSTORE_PASSWORD}|${FDROID_KEYSTORE_PASSWORD}|g" config.yml
+sed -i "s|\${FDROID_KEY_ALIAS}|${FDROID_KEY_ALIAS}|g" config.yml
+sed -i "s|\${FDROID_KEY_PASSWORD}|${FDROID_KEY_PASSWORD}|g" config.yml
 
 cp "$FDROID_KEYSTORE_PATH" /tmp/fdroid-keystore.jks
 
 mkdir -p repo
 cp -f metadata/apks/*.apk repo/ 2>/dev/null || true
 
-fdroid update --config "$TMP_CONFIG" --verbose
+fdroid update --verbose
 
 echo "Done. Commit and push repo/ for static hosting."

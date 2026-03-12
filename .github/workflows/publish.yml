@@ -58,11 +58,11 @@ jobs:
           FDROID_KEY_ALIAS: ${{ secrets.FDROID_KEY_ALIAS }}
           FDROID_KEY_PASSWORD: ${{ secrets.FDROID_KEY_PASSWORD }}
         run: |
-          cp fdroid-config.template.yml /tmp/fdroid-config.yml
-          sed -i "s|\${FDROID_REPO_URL}|${FDROID_REPO_URL}|g" /tmp/fdroid-config.yml
-          sed -i "s|\${FDROID_KEYSTORE_PASSWORD}|${FDROID_KEYSTORE_PASSWORD}|g" /tmp/fdroid-config.yml
-          sed -i "s|\${FDROID_KEY_ALIAS}|${FDROID_KEY_ALIAS}|g" /tmp/fdroid-config.yml
-          sed -i "s|\${FDROID_KEY_PASSWORD}|${FDROID_KEY_PASSWORD}|g" /tmp/fdroid-config.yml
+          cp fdroid-config.template.yml config.yml
+          sed -i "s|\${FDROID_REPO_URL}|${FDROID_REPO_URL}|g" config.yml
+          sed -i "s|\${FDROID_KEYSTORE_PASSWORD}|${FDROID_KEYSTORE_PASSWORD}|g" config.yml
+          sed -i "s|\${FDROID_KEY_ALIAS}|${FDROID_KEY_ALIAS}|g" config.yml
+          sed -i "s|\${FDROID_KEY_PASSWORD}|${FDROID_KEY_PASSWORD}|g" config.yml
 
       - name: Copy APKs into repo
         run: |
@@ -72,7 +72,7 @@ jobs:
 
       - name: Update F-Droid index
         run: |
-          fdroid update --config /tmp/fdroid-config.yml --verbose
+          fdroid update --verbose
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -81,3 +81,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+      - name: Cleanup config
+        if: always()
+        run: rm -f config.yml
