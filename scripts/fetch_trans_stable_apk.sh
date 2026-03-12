@@ -15,14 +15,28 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   AUTH_HEADER=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
 fi
 
-JSON="$(curl -fsSL "${AUTH_HEADER[@]}" -H 'Accept: application/vnd.github+json' "$API_URL")"
+TMP_JSON="$(mktemp)"
+trap 'rm -f "$TMP_JSON"' EXIT
+curl -fsSL "${AUTH_HEADER[@]}" -H 'Accept: application/vnd.github+json' "$API_URL" > "$TMP_JSON"
 
-readarray -t parsed < <(RELEASES_JSON="$JSON" ASSET_NAME="$ASSET_NAME" python3 - <<'PY'
+readarray -t parsed < <(python3 - "$TMP_JSON" "$ASSET_NAME" <<'PY'
 import json
-import os
 import sys
 
-raw = os.environ.get("RELEASES_JSON", "")
+if len(sys.argv) < 3:
+    print("ERROR:bad-args")
+    sys.exit(1)
+
+json_path = sys.argv[1]
+asset_name = sys.argv[2]
+
+try:
+    with open(json_path, "r", encoding="utf-8") as f:
+        raw = f.read()
+except OSError:
+    print("ERROR:read-failed")
+    sys.exit(1)
+
 if not raw.strip():
     print("ERROR:empty-response")
     sys.exit(1)
@@ -36,8 +50,6 @@ except json.JSONDecodeError:
 if not isinstance(releases, list):
     print("ERROR:unexpected-payload")
     sys.exit(1)
-
-asset_name = os.environ.get("ASSET_NAME", "trans.apk")
 
 for rel in releases:
     if rel.get("draft"):
