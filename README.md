@@ -2,6 +2,11 @@
 
 This repository hosts a custom F-Droid-compatible app repository for `khonager` apps.
 
+## Available apps
+
+- `Trans` (stable)
+- `Trans Dev` (separate unstable app)
+
 ## What users do
 
 1. Install an F-Droid-compatible client (F-Droid, Neo Store, Droid-ify).
@@ -32,11 +37,12 @@ This repository hosts a custom F-Droid-compatible app repository for `khonager` 
 4. Set GitHub variable:
    - `FDROID_REPO_URL` = `https://khonager.github.io/f-droid/repo`
 
-## Automatic Trans stable sync
+## Automatic sync sources
 
-The publish workflow automatically downloads the latest stable Android APK from:
-- `khonager/Trans` latest GitHub release
-- asset name: `trans.apk`
+The publish workflow automatically downloads:
+
+- Stable app from `khonager/Trans` latest stable release asset `trans.apk`
+- Dev app from `khonager/Trans` latest prerelease asset `trans-dev.apk`
 
 Then it rebuilds the F-Droid index and publishes to GitHub Pages.
 

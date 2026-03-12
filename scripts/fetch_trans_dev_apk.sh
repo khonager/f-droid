@@ -3,7 +3,7 @@ set -euo pipefail
 
 OWNER="${TRANS_OWNER:-khonager}"
 REPO="${TRANS_REPO:-Trans}"
-ASSET_NAME="${TRANS_STABLE_ASSET_NAME:-trans.apk}"
+ASSET_NAME="${TRANS_DEV_ASSET_NAME:-trans-dev.apk}"
 OUT_DIR="${1:-metadata/apks}"
 
 mkdir -p "$OUT_DIR"
@@ -53,7 +53,7 @@ if not isinstance(releases, list):
 for rel in releases:
     if rel.get("draft"):
         continue
-    if rel.get("prerelease"):
+    if not rel.get("prerelease"):
         continue
 
     for asset in rel.get("assets", []):
@@ -66,13 +66,13 @@ for rel in releases:
             print(url)
             sys.exit(0)
 
-print("ERROR:no-matching-stable-release")
+print("ERROR:no-matching-prerelease")
 sys.exit(1)
 PY
 )
 
 if [[ ${#parsed[@]} -lt 2 || "${parsed[0]}" == ERROR:* ]]; then
-  echo "Could not find asset '$ASSET_NAME' in a non-prerelease release of ${OWNER}/${REPO}" >&2
+  echo "Could not find asset '$ASSET_NAME' in a prerelease of ${OWNER}/${REPO}" >&2
   if [[ ${#parsed[@]} -gt 0 ]]; then
     echo "Reason: ${parsed[0]}" >&2
   fi
@@ -82,9 +82,9 @@ fi
 TAG="${parsed[0]}"
 URL="${parsed[1]}"
 SAFE_TAG="${TAG//\//-}"
-OUT_FILE="${OUT_DIR}/de.khonager.trans_${SAFE_TAG}.apk"
+OUT_FILE="${OUT_DIR}/de.khonager.trans.unstable_${SAFE_TAG}.apk"
 
-rm -f "${OUT_DIR}/de.khonager.trans_"*.apk
+rm -f "${OUT_DIR}/de.khonager.trans.unstable_"*.apk
 curl -fL "${AUTH_HEADER[@]}" -H 'Accept: application/octet-stream' -o "$OUT_FILE" "$URL"
 
 echo "Downloaded: $OUT_FILE"

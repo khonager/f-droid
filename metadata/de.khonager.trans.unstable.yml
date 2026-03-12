@@ -1,0 +1,22 @@
+Categories:
+  - Navigation
+  - Internet
+License: Proprietary
+AuthorName: khonager
+AuthorWebSite: https://github.com/khonager
+SourceCode: https://github.com/khonager/Trans
+IssueTracker: https://github.com/khonager/Trans/issues
+
+AutoName: Trans Dev
+Summary: Public transit companion app (development builds)
+Description: |
+  A cross-platform public transit app built with Flutter. Plan routes,
+  track your journey with wake-up alarms, and never miss your stop again.
+
+  This package contains development builds from the unstable channel.
+
+RepoType: git
+Repo: https://github.com/khonager/Trans.git
+
+CurrentVersion: 0
+CurrentVersionCode: 0

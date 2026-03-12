@@ -45,6 +45,15 @@ jobs:
         run: |
           ./scripts/fetch_trans_stable_apk.sh metadata/apks
 
+      - name: Fetch latest dev APK from khonager/Trans prerelease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRANS_OWNER: khonager
+          TRANS_REPO: Trans
+          TRANS_DEV_ASSET_NAME: trans-dev.apk
+        run: |
+          ./scripts/fetch_trans_dev_apk.sh metadata/apks
+
       - name: Restore F-Droid keystore
         env:
           FDROID_KEYSTORE_BASE64: ${{ secrets.FDROID_KEYSTORE_BASE64 }}
